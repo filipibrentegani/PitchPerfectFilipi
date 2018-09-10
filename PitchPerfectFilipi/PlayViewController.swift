@@ -11,17 +11,13 @@ import AVFoundation
 
 class PlayViewController: UIViewController {
     
-    // MARK: Variables and Constants
-    let defaultPitchValue: Float = 0.0
-    let defaultRateValue: Float = 1.0
-    let defaultEchoReverbValue = false
-    
     var recordedAudioURL: URL!
     var audioFile:AVAudioFile!
     var audioEngine:AVAudioEngine!
     var audioPlayerNode: AVAudioPlayerNode!
     var stopTimer: Timer!
-    var screenState: PlayingState = .notPlaying
+    
+    enum ButtonType: Int {case slow = 0, fast, chipmunk, vader, echo, reverb }
     
     // MARK: Lifecycle Events
     override func viewDidLoad() {
@@ -29,31 +25,40 @@ class PlayViewController: UIViewController {
         setupAudio()
     }
     
-    // MARK: IBOutlets
-    @IBOutlet weak var rateSlider: UISlider!
-    @IBOutlet weak var playStopButton: UIButton!
-    @IBOutlet weak var pitchSlider: UISlider!
-    @IBOutlet weak var echoSwitch: UISwitch!
-    @IBOutlet weak var reverbSwitch: UISwitch!
-    
-    
-    // MARK: IBActions
-    @IBAction func onPlayStopPressed(_ sender: Any) {
-        if screenState == PlayingState.playing {
-            stopAudio()
-        } else {
-            playSound(rate: rateSlider.value, pitch: pitchSlider.value, echo: echoSwitch.isOn, reverb: reverbSwitch.isOn)
-            configureUI(.playing)
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureUI(.notPlaying)
     }
     
-    @IBAction func onResetPressed(_ sender: Any) {
-        if screenState == PlayingState.playing {
-            stopAudio()
+    // MARK: IBOutlets
+    @IBOutlet weak var slowButton: UIButton!
+    @IBOutlet weak var fastButton: UIButton!
+    @IBOutlet weak var highPitchButton: UIButton!
+    @IBOutlet weak var lowPitchButton: UIButton!
+    @IBOutlet weak var echoButton: UIButton!
+    @IBOutlet weak var reverbButton: UIButton!
+    @IBOutlet weak var stopButton: UIButton!
+    
+    // MARK: IBActions
+    @IBAction func onPlaySoundRequested(_ sender: UIButton) {
+        switch(ButtonType(rawValue: sender.tag)!) {
+        case .slow:
+            playSound(rate: 0.5)
+        case .fast:
+            playSound(rate: 1.5)
+        case .chipmunk:
+            playSound(pitch: 1000)
+        case .vader:
+            playSound(pitch: -1000)
+        case .echo:
+            playSound(echo: true)
+        case .reverb:
+            playSound(reverb: true)
         }
-        rateSlider.value = defaultRateValue
-        pitchSlider.value = defaultPitchValue
-        echoSwitch.isOn = defaultEchoReverbValue
-        reverbSwitch.isOn = defaultEchoReverbValue
+        configureUI(.playing)
+    }
+    
+    @IBAction func onStopSoundRequested(_ sender: Any) {
+        stopAudio()
     }
 }
