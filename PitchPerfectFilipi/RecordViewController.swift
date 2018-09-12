@@ -64,7 +64,7 @@ extension RecordViewController : AVAudioRecorderDelegate {
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
         if flag {
             performSegue(withIdentifier: "showPlayScreen", sender: audioRecorder.url)
-        }else{
+        } else {
             print("error while recording...")
         }
     }

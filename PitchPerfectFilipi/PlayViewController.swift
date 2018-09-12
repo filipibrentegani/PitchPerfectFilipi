@@ -19,6 +19,15 @@ class PlayViewController: UIViewController {
     
     enum ButtonType: Int {case slow = 0, fast, chipmunk, vader, echo, reverb }
     
+    // MARK: IBOutlets
+    @IBOutlet weak var slowButton: UIButton!
+    @IBOutlet weak var fastButton: UIButton!
+    @IBOutlet weak var highPitchButton: UIButton!
+    @IBOutlet weak var lowPitchButton: UIButton!
+    @IBOutlet weak var echoButton: UIButton!
+    @IBOutlet weak var reverbButton: UIButton!
+    @IBOutlet weak var stopButton: UIButton!
+    
     // MARK: Lifecycle Events
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,15 +38,6 @@ class PlayViewController: UIViewController {
         super.viewWillAppear(animated)
         configureUI(.notPlaying)
     }
-    
-    // MARK: IBOutlets
-    @IBOutlet weak var slowButton: UIButton!
-    @IBOutlet weak var fastButton: UIButton!
-    @IBOutlet weak var highPitchButton: UIButton!
-    @IBOutlet weak var lowPitchButton: UIButton!
-    @IBOutlet weak var echoButton: UIButton!
-    @IBOutlet weak var reverbButton: UIButton!
-    @IBOutlet weak var stopButton: UIButton!
     
     // MARK: IBActions
     @IBAction func onPlaySoundRequested(_ sender: UIButton) {
